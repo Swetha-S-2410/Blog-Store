@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; background-color: #fff; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+        h1, h2 { text-align: center; }
+        .payment-form { margin-top: 30px; }
+        .payment-form label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .payment-form input[type="text"],
+        .payment-form input[type="email"],
+        .payment-form input[type="tel"],
+        .payment-form select {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .payment-form button { width: 100%; padding: 15px; background-color: #4CAF50; border: none; color: white; font-size: 16px; cursor: pointer; border-radius: 4px; }
+        .payment-form button:hover { background-color: #45a049; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Payment</h1>
+        <div class="payment-form">
+            <form id="paymentForm" onsubmit="submitPayment(event)">
+                <label for="phone">Phone Number:</label>
+                <input type="tel" id="phone" name="phone" required>
+
+                <label for="paymentMode">Payment Mode:</label>
+                <select id="paymentMode" name="paymentMode" required>
+                    <option value="paypal">PayPal</option>
+                    <option value="gpay">Gpay</option>
+                    <option value="paytm">Paytm</option>
+                    <option value="credit">Credit Card</option>
+                    <option value="debit">Debit Card</option>
+                </select>
+
+                <label for="amount">Amount:</label>
+                <input type="text" id="amount" name="amount" required readonly>
+
+                <button type="submit">Proceed to Pay</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        function calculateTotalAmount() {
+            let totalAmount = 0;
+            cart.forEach(item => {
+                totalAmount += item.price;
+            });
+            return totalAmount.toFixed(2);
+        }
+
+        function submitPayment(event) {
+            event.preventDefault();
+
+            const formData = new FormData(document.getElementById('paymentForm'));
+            const phone = formData.get('phone');
+            const paymentMode = formData.get('paymentMode');
+            const amount = formData.get('amount');
+
+            // You can add further validation if needed
+
+            if (confirm(`Please confirm your payment:\n\nPhone: ${phone}\nPayment Mode: ${paymentMode}\nAmount: $${amount}`)) {
+                alert('Payment paid successfully!');
+                localStorage.setItem('orderDetails', JSON.stringify({ phone, paymentMode, amount }));
+                window.location.href = 'order_confirmation.html';
+            }
+            
+        }
+
+        document.getElementById('amount').value = calculateTotalAmount();
+    </script>
+</body>
+</html>
