@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #2efafd;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 600px;
+            margin: auto;
+        }
+        h1 {
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        p {
+            color: #666;
+            font-size: 16px;
+            line-height: 1.5;
+            margin: 10px 0;
+        }
+        .order-details p {
+            text-align: left;
+        }
+        .thank-you {
+            font-size: 18px;
+            color: #4CAF50;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Order Confirmation</h1>
+        <div id="orderDetails" class="order-details">
+            <!-- Order details will be displayed here -->
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const orderDetails = JSON.parse(localStorage.getItem('orderDetails'));
+
+            if (orderDetails) {
+                const orderDetailsContainer = document.getElementById('orderDetails');
+                orderDetailsContainer.innerHTML = `
+                    <h2>Thank you for your order, ${orderDetails.name}!</h2>
+                    <p><strong>Address:</strong> ${orderDetails.address}</p>
+                    <p><strong>Email:</strong> ${orderDetails.email}</p>
+                    <p><strong>Phone:</strong> ${orderDetails.phone}</p>
+                    <p><strong>Payment Method:</strong> ${orderDetails.paymentMethod}</p>
+                    <p class="thank-you">Your order has been placed successfully. You will receive a confirmation email shortly.</p>
+                    <p>Order tracking information will be provided via email.</p>
+                `;
+            } else {
+                const orderDetailsContainer = document.getElementById('orderDetails');
+                orderDetailsContainer.innerHTML = '<p>No order details found.</p>';
+            }
+        });
+    </script>
+</body>
+</html>
